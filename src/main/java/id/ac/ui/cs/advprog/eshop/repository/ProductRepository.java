@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.UUID;
+
 
 @Repository
 public class ProductRepository {
@@ -36,5 +36,11 @@ public class ProductRepository {
             }
         }
         return null;
+    }
+
+    public Product delete(String id) {
+        Product product = findById(id);
+        productData.remove(product);
+        return product;
     }
 }
