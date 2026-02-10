@@ -35,3 +35,17 @@ Kita bisa menggunakan metrik Code Coverage. Ini adalah ukuran seberapa banyak ba
 Apakah 100% Code Coverage berarti 0 Bug? 
 
 Tidak. Code coverage hanya menjamin bahwa baris kode tersebut pernah dijalankan saat tes, bukan berarti logikanya sudah benar untuk semua kemungkinan input atau interaksi sistem yang kompleks. Bug tetap bisa muncul pada level integrasi atau karena logika bisnis yang salah dipahami.
+
+Kebersihan Kode pada Functional Test Baru
+
+Jika saya membuat functional test suite baru (misal untuk mengecek jumlah item di list) dengan menduplikasi setup dan variabel dari CreateProductFunctionalTest.java, maka kualitas kode tersebut akan menurun.
+
+Isu Clean Code (Code Smells): Masalah utamanya adalah Code Duplication (Duplikasi Kode). Menuliskan prosedur setup yang sama (seperti inisialisasi driver, server port, dan base URL) berulang kali melanggar prinsip DRY (Don't Repeat Yourself).
+
+Dampak: Kode menjadi sulit di-maintain. Jika di masa depan ada perubahan pada konfigurasi sistem (misalnya perubahan URL dasar atau penambahan setup driver), saya harus mengubahnya di banyak file sekaligus. Ini meningkatkan risiko kesalahan manusia.
+
+Saran Perbaikan:
+
+Base Class (Inheritance): Membuat sebuah base class (misal BaseFunctionalTest) yang berisi semua variabel instans dan prosedur @BeforeEach yang umum. Test class lain cukup melakukan extends ke base class tersebut.
+
+Setup Methods: Membungkus logika navigasi atau interaksi yang sering digunakan ke dalam method pembantu (helper methods) atau menggunakan pola Page Object Model (POM) untuk memisahkan logika tes dengan detail elemen UI.
