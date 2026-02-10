@@ -8,5 +8,8 @@ public class Product {
     private String productId;
     private String productName;
     private int productQuantity;
+    public Product() {
+        this.productId = UUID.randomUUID().toString();
+    }
 }
 
