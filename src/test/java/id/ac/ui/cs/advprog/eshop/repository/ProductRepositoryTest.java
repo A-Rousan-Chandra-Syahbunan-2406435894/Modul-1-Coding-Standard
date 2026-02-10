@@ -65,4 +65,58 @@ class ProductRepositoryTest {
         assertEquals(product2.getProductId(), savedProduct.getProductId());
         assertFalse(productIterator.hasNext());
     }
+    @Test
+    void testEditProductPositive() {
+        Product product = new Product();
+        product.setProductName("Sampo Cap Bambang");
+        product.setProductQuantity(100);
+        productRepository.create(product);
+
+        Product editedProduct = new Product();
+        editedProduct.setProductId(product.getProductId()); // ID yang sama
+        editedProduct.setProductName("Sampo Cap Bambang Baru");
+        editedProduct.setProductQuantity(200);
+        productRepository.edit(editedProduct);
+
+        Product result = productRepository.findById(product.getProductId());
+        assertEquals("Sampo Cap Bambang Baru", result.getProductName());
+        assertEquals(200, result.getProductQuantity());
+    }
+
+    @Test
+    void testEditProductNegative() {
+        Product product = new Product();
+        product.setProductName("Sampo Cap Bambang");
+        product.setProductQuantity(100);
+        productRepository.create(product);
+
+        Product editedProduct = new Product();
+        editedProduct.setProductId("id-gajelas"); // ID tidak ada
+        editedProduct.setProductName("Barang Gaib");
+        productRepository.edit(editedProduct);
+
+        Product result = productRepository.findById(product.getProductId());
+        assertNotEquals("Barang Gaib", result.getProductName());
+    }
+
+    @Test
+    void testDeleteProductPositive() {
+        Product product = new Product();
+        product.setProductName("Sampo Cap Bambang");
+        productRepository.create(product);
+
+        productRepository.delete(product.getProductId());
+        Product result = productRepository.findById(product.getProductId());
+        assertNull(result);
+    }
+
+    @Test
+    void testDeleteProductNegative() {
+        Product product = new Product();
+        product.setProductName("Sampo Cap Bambang");
+        productRepository.create(product);
+        productRepository.delete("id-gajelas"); // Hapus id yang gak ada
+        Product result = productRepository.findById(product.getProductId());
+        assertNotNull(result); // Barang aslinya harusnya masih ada
+    }
 }
