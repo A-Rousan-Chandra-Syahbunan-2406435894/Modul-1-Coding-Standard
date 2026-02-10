@@ -17,3 +17,21 @@ Oh iya, tambahan disini saya menambahkan UUID. hal ini sangat penting untuk menc
 (Untuk fitur edit dan delete)
 
 Buat masalahnnya ini mungkin akan berkaitan dengan exersice 2 jadi nanti saya lanjutkan
+
+Refleksi 2
+
+Perasaan saya setelah membuat unit test dan code coverage
+
+Setelah menulis unit test, saya menyadari bahwa ternyata masih banyak kesalahan (bug) dalam kode yang saya buat sebelumnya. Misalnya, masalah perbedaan nama variabel yang tidak konsisten atau kesalahan logika kecil lainnya yang tidak terlihat saat hanya menulis kode fitur. Dengan adanya unit test, kesalahan-kesalahan tersebut bisa terdeteksi lebih dini sebelum aplikasi dijalankan secara keseluruhan. Hal ini membuat saya merasa lebih aman karena unit test bertindak sebagai "jaring pengaman" untuk memastikan setiap bagian kode berjalan sesuai ekspektasi.
+
+Berapa banyak unit test dalam satu class? 
+
+Tidak ada angka pasti, namun jumlahnya harus cukup untuk mencakup semua jalur logika (logical paths), termasuk skenario positif, skenario negatif, dan edge cases (kondisi batas).
+
+Bagaimana memastikan unit test sudah cukup? 
+
+Kita bisa menggunakan metrik Code Coverage. Ini adalah ukuran seberapa banyak baris kode kita yang sudah dieksekusi oleh test. Di IntelliJ, kita bisa melihat ini melalui fitur "Run with Coverage".
+
+Apakah 100% Code Coverage berarti 0 Bug? 
+
+Tidak. Code coverage hanya menjamin bahwa baris kode tersebut pernah dijalankan saat tes, bukan berarti logikanya sudah benar untuk semua kemungkinan input atau interaksi sistem yang kompleks. Bug tetap bisa muncul pada level integrasi atau karena logika bisnis yang salah dipahami.
