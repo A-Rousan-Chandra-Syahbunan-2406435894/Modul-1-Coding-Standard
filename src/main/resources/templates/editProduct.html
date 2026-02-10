@@ -9,16 +9,16 @@
 <div class="container">
     <h3>Edit Product</h3>
     <form th:action="@{/product/edit}" th:object="${product}" method="POST">
-        <!-- PENTING: ID Disembunyikan biar gak diganti user -->
-        <input type="hidden" th:field="*{product.productId}" />
+        <!-- PERBAIKAN: Langsung panggil fieldnya, tanpa "product." -->
+        <input type="hidden" th:field="*{productId}" />
 
         <div class="form-group">
             <label>Product Name</label>
-            <input type="text" class="form-control" th:field="*{product.productName}" placeholder="Enter product name">
+            <input type="text" class="form-control" th:field="*{productName}" placeholder="Enter product name">
         </div>
         <div class="form-group">
             <label>Product Quantity</label>
-            <input type="number" class="form-control" th:field="*{product.productQuantity}" placeholder="Enter product quantity">
+            <input type="number" class="form-control" th:field="*{productQuantity}" placeholder="Enter product quantity">
         </div>
         <button type="submit" class="btn btn-success">Save Changes</button>
         <a href="../list" class="btn btn-secondary">Cancel</a>
