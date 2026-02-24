@@ -85,6 +85,7 @@ sonar {
         property("sonar.projectKey", "A-Rousan-Chandra-Syahbunan-2406435894_Modul-1-Coding-Standard")
         property("sonar.organization", "a-rousan-chandra-syahbunan-2406435894")
         property("sonar.host.url", "https://sonarcloud.io")
-        property("sonar.coverage.jacoco.xmlReportPaths", "build/reports/jacoco/test/jacocoTestReport.xml")
+
+        property("sonar.coverage.jacoco.xmlReportPaths", "**/build/reports/jacoco/test/*.xml")
     }
 }
