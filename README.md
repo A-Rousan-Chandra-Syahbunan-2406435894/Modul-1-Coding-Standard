@@ -77,3 +77,13 @@ Kode menjadi sulit di-maintain. Jika di masa depan ada perubahan pada konfiguras
 
 - **Setup Methods / Page Object Model (POM)**  
   Membungkus logika navigasi atau i
+
+Refleksi 2 
+
+1. Code Quality Issues dan Strategi Perbaikannya
+Selama proses integrasi dengan SonarCloud dan OSSF Scorecard, saya menemukan beberapa peringatan (issues) terkait kualitas dan keamanan kode. Salah satu isu utama adalah Security Hotspot pada penggunaan UUID.randomUUID(). SonarCloud menandai bagian ini untuk mengingatkan potensi kelemahan jika UUID digunakan untuk cryptography atau session tokens.
+Strategi Perbaikan: Karena dalam konteks aplikasi ini UUID hanya digunakan sebagai penanda identitas produk (Product ID) dan tidak melibatkan data sensitif, saya mereview teguran tersebut dan menandainya sebagai "Safe" di dashboard SonarCloud. Selain itu, saya juga memperbaiki isu Code Coverage yang bernilai 0% pada SonarCloud dengan cara menyertakan path laporan JaCoCo XML (xml.required.set(true)) dan memperbaiki urutan task pada GitHub Actions agar laporan di-generate sebelum dikirim ke SonarCloud. Dengan optimasi ini, saya berhasil mencapai 100% Code Coverage.
+2. Evaluasi Implementasi CI/CD
+Menurut saya, alur kerja (workflows) yang telah saya buat di GitHub Actions sudah memenuhi definisi Continuous Integration (CI) dan Continuous Deployment (CD) dengan sangat baik.
+Continuous Integration (CI) terpenuhi karena setiap kali ada proses push atau pull request, GitHub Actions secara otomatis akan menjalankan build, mengeksekusi semua Unit Test dan Functional Test, serta mengirimkan laporannya ke SonarCloud untuk dianalisis kualitas kodenya. Hal ini memastikan bahwa kode baru tidak merusak sistem lama.
+Continuous Deployment (CD) terpenuhi dengan adanya integrasi pull-based menggunakan platform PaaS (Koyeb/Render). Platform tersebut selalu memantau branch utama di GitHub, dan apabila status integrasi (CI) berhasil, Koyeb akan secara otomatis menarik codebase terbaru, membangun Docker image, dan mendeploy aplikasi ke server publik tanpa perlu campur tangan manual.
