@@ -78,7 +78,7 @@ Kode menjadi sulit di-maintain. Jika di masa depan ada perubahan pada konfiguras
 - **Setup Methods / Page Object Model (POM)**  
   Membungkus logika navigasi atau i
 
-Refleksi 2 
+Refleksi 3
 
 1. Code Quality Issues dan Strategi Perbaikannya
 Selama proses integrasi dengan SonarCloud dan OSSF Scorecard, saya menemukan beberapa peringatan (issues) terkait kualitas dan keamanan kode. Salah satu isu utama adalah Security Hotspot pada penggunaan UUID.randomUUID(). SonarCloud menandai bagian ini untuk mengingatkan potensi kelemahan jika UUID digunakan untuk cryptography atau session tokens.
