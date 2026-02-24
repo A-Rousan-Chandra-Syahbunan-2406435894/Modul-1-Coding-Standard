@@ -1,5 +1,6 @@
 plugins {
     java
+    jacoco
     id("org.springframework.boot") version "3.4.2" // Saran: gunakan versi stabil 3.4.2 jika 3.5 belum rilis resmi
     id("io.spring.dependency-management") version "1.1.7"
 }
