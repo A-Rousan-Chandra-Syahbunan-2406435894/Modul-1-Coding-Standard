@@ -86,6 +86,5 @@ sonar {
         property("sonar.organization", "a-rousan-chandra-syahbunan-2406435894")
         property("sonar.host.url", "https://sonarcloud.io")
 
-        property("sonar.coverage.jacoco.xmlReportPaths", "**/build/reports/jacoco/test/*.xml")
-    }
+        property("sonar.coverage.jacoco.xmlReportPaths", "build/reports/jacoco/test/jacocoTestReport.xml, app/build/reports/jacoco/test/jacocoTestReport.xml, target/site/jacoco/jacoco.xml")    }
 }
