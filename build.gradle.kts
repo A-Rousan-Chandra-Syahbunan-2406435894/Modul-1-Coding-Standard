@@ -76,8 +76,12 @@ tasks.test{
 
     finalizedBy(tasks.jacocoTestReport)
 }
-tasks.jacocoTestReport{
+tasks.jacocoTestReport {
     dependsOn(tasks.test)
+    reports {
+        xml.required.set(true)  // <-- INI DIA KUNCI JAWABANNYA!
+        html.required.set(true)
+    }
 }
 
 sonar {
