@@ -56,4 +56,46 @@ class ProductServiceImplTest {
         assertFalse(result.isEmpty());
         assertEquals(product.getProductName(), result.get(0).getProductName());
     }
+    @Test
+    void testEditProduct() {
+        Product product = new Product();
+        product.setProductId("eb558e9f-1c39-460e-8860-71af6af63bd6");
+        product.setProductName("Sampo Cap Bambang");
+        product.setProductQuantity(100);
+
+        Mockito.when(productRepository.edit(product)).thenReturn(product);
+
+        Product result = productService.edit(product);
+        assertEquals(product.getProductId(), result.getProductId());
+        assertEquals(product.getProductName(), result.getProductName());
+        Mockito.verify(productRepository, Mockito.times(1)).edit(product);
+    }
+
+    @Test
+    void testDeleteProduct() {
+        Product product = new Product();
+        product.setProductId("eb558e9f-1c39-460e-8860-71af6af63bd6");
+
+        Mockito.when(productRepository.delete("eb558e9f-1c39-460e-8860-71af6af63bd6")).thenReturn(product);
+
+        Product result = productService.delete("eb558e9f-1c39-460e-8860-71af6af63bd6");
+        assertEquals(product.getProductId(), result.getProductId());
+        Mockito.verify(productRepository, Mockito.times(1)).delete("eb558e9f-1c39-460e-8860-71af6af63bd6");
+    }
+    @Test
+    void testFindById() {
+        Product product = new Product();
+        product.setProductId("eb558e9f-1c39-460e-8860-71af6af63bd6");
+        product.setProductName("Sampo Cap Bambang");
+
+        // Kita simulasiin kalau repository nemu barangnya
+        Mockito.when(productRepository.findById("eb558e9f-1c39-460e-8860-71af6af63bd6")).thenReturn(product);
+
+        Product result = productService.findById("eb558e9f-1c39-460e-8860-71af6af63bd6");
+
+        assertNotNull(result);
+        assertEquals(product.getProductId(), result.getProductId());
+        assertEquals(product.getProductName(), result.getProductName());
+        Mockito.verify(productRepository, Mockito.times(1)).findById("eb558e9f-1c39-460e-8860-71af6af63bd6");
+    }
 }
