@@ -78,12 +78,21 @@ Kode menjadi sulit di-maintain. Jika di masa depan ada perubahan pada konfiguras
 - **Setup Methods / Page Object Model (POM)**  
   Membungkus logika navigasi atau i
 
-Refleksi 3
+# Refleksi 3
 
-1. Code Quality Issues dan Strategi Perbaikannya
-Selama proses integrasi dengan SonarCloud dan OSSF Scorecard, saya menemukan beberapa peringatan (issues) terkait kualitas dan keamanan kode. Salah satu isu utama adalah Security Hotspot pada penggunaan UUID.randomUUID(). SonarCloud menandai bagian ini untuk mengingatkan potensi kelemahan jika UUID digunakan untuk cryptography atau session tokens.
-Strategi Perbaikan: Karena dalam konteks aplikasi ini UUID hanya digunakan sebagai penanda identitas produk (Product ID) dan tidak melibatkan data sensitif, saya mereview teguran tersebut dan menandainya sebagai "Safe" di dashboard SonarCloud. Selain itu, saya juga memperbaiki isu Code Coverage yang bernilai 0% pada SonarCloud dengan cara menyertakan path laporan JaCoCo XML (xml.required.set(true)) dan memperbaiki urutan task pada GitHub Actions agar laporan di-generate sebelum dikirim ke SonarCloud. Dengan optimasi ini, saya berhasil mencapai 100% Code Coverage.
-2. Evaluasi Implementasi CI/CD
-Menurut saya, alur kerja (workflows) yang telah saya buat di GitHub Actions sudah memenuhi definisi Continuous Integration (CI) dan Continuous Deployment (CD) dengan sangat baik.
-Continuous Integration (CI) terpenuhi karena setiap kali ada proses push atau pull request, GitHub Actions secara otomatis akan menjalankan build, mengeksekusi semua Unit Test dan Functional Test, serta mengirimkan laporannya ke SonarCloud untuk dianalisis kualitas kodenya. Hal ini memastikan bahwa kode baru tidak merusak sistem lama.
-Continuous Deployment (CD) terpenuhi dengan adanya integrasi pull-based menggunakan platform PaaS (Koyeb/Render). Platform tersebut selalu memantau branch utama di GitHub, dan apabila status integrasi (CI) berhasil, Koyeb akan secara otomatis menarik codebase terbaru, membangun Docker image, dan mendeploy aplikasi ke server publik tanpa perlu campur tangan manual.
+## 1. Code Quality Issues dan Strategi Perbaikannya
+Selama proses integrasi dengan **SonarCloud** dan **OSSF Scorecard**, saya menemukan beberapa peringatan (*issues*) terkait kualitas dan keamanan kode. Salah satu isu utama adalah **Security Hotspot** pada penggunaan `UUID.randomUUID()`. SonarCloud menandai bagian ini untuk mengingatkan potensi kelemahan jika generator angka acak standar digunakan untuk keperluan kriptografi atau token sesi yang sensitif.
+
+**Strategi Perbaikan:**
+Karena dalam konteks aplikasi ini `UUID` hanya digunakan sebagai penanda identitas unik produk (**Product ID**) dan tidak melibatkan data kriptografi yang kritikal, saya telah meninjau temuan tersebut dan menandainya sebagai **"Safe"** pada dashboard SonarCloud. 
+
+Selain itu, saya juga memperbaiki masalah **Code Coverage** yang awalnya terbaca 0% di SonarCloud. Hal ini diselesaikan dengan mengaktifkan laporan JaCoCo format XML (`xml.required.set(true)`) pada file `build.gradle.kts` serta memperbaiki urutan *task* pada GitHub Actions agar laporan hasil tes di-*generate* terlebih dahulu sebelum dikirimkan ke SonarCloud. Melalui berbagai optimasi tes pada Controller dan Main class, saya berhasil mencapai **100% Code Coverage**.
+
+## 2. Evaluasi Implementasi CI/CD
+Menurut saya, alur kerja (*workflows*) yang telah saya susun menggunakan GitHub Actions sudah memenuhi prinsip **Continuous Integration (CI)** dan **Continuous Deployment (CD)** dengan sangat baik:
+
+*   **Continuous Integration (CI):** Prinsip ini terpenuhi melalui otomatisasi setiap kali terjadi proses `push` atau `pull request`. GitHub Actions secara otomatis menjalankan proses *build*, mengeksekusi seluruh rangkaian **Unit Test** dan **Functional Test**, serta melakukan pemindaian kualitas kode melalui **SonarCloud**. Hal ini memastikan setiap perubahan kode baru tetap terjaga kualitasnya dan tidak merusak fungsi sistem yang sudah ada.
+*   **Continuous Deployment (CD):** Prinsip ini terpenuhi melalui integrasi mekanisme *pull-based* ke platform PaaS (**Koyeb**). Platform tersebut secara otomatis memantau *branch* utama pada repositori GitHub. Apabila tahap CI berhasil dilewati, Koyeb akan langsung melakukan *build* ulang menggunakan **Docker image** dan memperbarui aplikasi di server publik secara otomatis tanpa perlu campur tangan manual kembali.
+
+---
+**Link Deployment (Koyeb):** [Klik di sini untuk menuju aplikasi](https://given-bertha-a-rousan-chandra-syahbunan-2406435894-97c4f5b2.koyeb.app/)
