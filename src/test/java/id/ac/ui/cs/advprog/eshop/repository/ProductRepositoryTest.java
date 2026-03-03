@@ -91,7 +91,7 @@ class ProductRepositoryTest {
         productRepository.create(product);
 
         Product editedProduct = new Product();
-        editedProduct.setProductId("id-gajelas"); // ID tidak ada
+        editedProduct.setProductId("id-gajelas");
         editedProduct.setProductName("Barang Gaib");
         productRepository.edit(editedProduct);
 
@@ -115,8 +115,8 @@ class ProductRepositoryTest {
         Product product = new Product();
         product.setProductName("Sampo Cap Bambang");
         productRepository.create(product);
-        productRepository.delete("id-gajelas"); // Hapus id yang gak ada
+        productRepository.delete("id-gajelas");
         Product result = productRepository.findById(product.getProductId());
-        assertNotNull(result); // Barang aslinya harusnya masih ada
+        assertNotNull(result);
     }
 }
