@@ -1,40 +1,22 @@
 package id.ac.ui.cs.advprog.eshop.functional;
 
-import io.github.bonigarcia.seljup.SeleniumJupiter;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.server.LocalServerPort;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 
-@SpringBootTest(webEnvironment = RANDOM_PORT)
-@ExtendWith(SeleniumJupiter.class)
-class CreateProductFunctionalTest {
-
-    @LocalServerPort
-    private int serverPort;
-
-    @Value("${app.baseUrl:http://localhost}")
-    private String baseUrl;
-
-    private String url;
-
-    @BeforeEach
-    void setupTest() {
-        url = String.format("%s:%d/product/list", baseUrl, serverPort);
-    }
+// Cukup extends, sisanya udah diurus bapaknya
+class CreateProductFunctionalTest extends BaseFunctionalTest {
 
     @Test
     void testCreateProductIsSuccessful(ChromeDriver driver) throws Exception {
+        // Pake variabel baseUrl dari bapaknya
+        String listUrl = baseUrl + "/product/list";
+
         // 1. Pergi ke halaman list, lalu klik tombol Create
-        driver.get(url);
+        driver.get(listUrl);
         driver.findElement(By.linkText("Create Product")).click();
 
         // 2. Isi Form
@@ -46,7 +28,7 @@ class CreateProductFunctionalTest {
 
         // 4. Verifikasi apakah balik ke halaman list dan barang muncul
         String currentUrl = driver.getCurrentUrl();
-        assertEquals(url, currentUrl);
+        assertEquals(listUrl, currentUrl);
 
         WebElement productName = driver.findElement(By.xpath("//td[contains(text(), 'Sampo Cap Bambang')]"));
         assertEquals("Sampo Cap Bambang", productName.getText());

@@ -13,5 +13,5 @@ public interface CarService {
 
     public void update(String carId, Car car);
 
-    public void deleteCarById(String carId);
+    public void deleteById(String carId);
 }

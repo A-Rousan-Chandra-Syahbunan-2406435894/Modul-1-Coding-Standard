@@ -52,7 +52,7 @@ class CarServiceImplTest {
 
     @Test
     void testDelete() {
-        carService.deleteCarById("123");
+        carService.deleteById("123");
         verify(carRepository, times(1)).delete("123");
     }
 }

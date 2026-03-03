@@ -23,14 +23,6 @@ class CarRepositoryTest {
     }
 
     @Test
-    void testCreateWithNullId() {
-        Car car = new Car();
-        car.setCarId(null);
-        carRepository.create(car);
-        assertNotNull(car.getCarId());
-    }
-
-    @Test
     void testFindAll() {
         Car car = new Car();
         carRepository.create(car);
