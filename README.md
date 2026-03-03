@@ -96,3 +96,44 @@ Menurut saya, alur kerja (*workflows*) yang telah saya susun menggunakan GitHub 
 
 ---
 **Link Deployment (Koyeb):** [Klik di sini untuk menuju aplikasi](https://given-bertha-a-rousan-chandra-syahbunan-2406435894-97c4f5b2.koyeb.app/)
+
+# Refleksi 4 - SOLID Principles
+
+Setelah melakukan refactoring pada proyek ini, berikut adalah analisis mendalam mengenai penerapan prinsip **SOLID** yang telah saya lakukan:
+
+## 1) Prinsip SOLID yang Diterapkan pada Proyek
+
+*   **Single Responsibility Principle (SRP):**
+    Saya memisahkan tanggung jawab kelas dengan membuat **CarController** yang terpisah dari **ProductController**. Sebelumnya, kodingan untuk fitur mobil menumpuk di dalam controller produk. Selain itu, saya memindahkan logika pembuatan ID unik (**UUID**) dari **CarRepository** ke dalam konstruktor model **Car**. Hal ini memastikan **Repository** hanya bertanggung jawab pada penyimpanan data, sementara **Model** bertanggung jawab atas identitas objeknya sendiri.
+
+*   **Open-Closed Principle (OCP):**
+    Saya menerapkan prinsip ini pada bagian **Functional Testing**. Saya membuat sebuah *base class* bernama **BaseFunctionalTest** yang menyimpan seluruh konfigurasi *setup server* dan *driver*. Dengan cara ini, kelas tes baru (seperti tes untuk Car) dapat memperluas (**extends**) perilaku tanpa harus mengubah kode dasar yang sudah stabil di dalam **BaseFunctionalTest**.
+
+*   **Liskov Substitution Principle (LSP):**
+    Saya menghapus hubungan pewarisan (**inheritance**) di mana sebelumnya **CarController** melakukan `extends ProductController`. Secara logika, **Mobil** bukanlah sub-tipe dari **Produk** biasa di aplikasi ini. Dengan memisahkan mereka, saya memastikan bahwa masing-masing kelas dapat berfungsi secara mandiri tanpa merusak logika kelas induk yang tidak relevan.
+
+*   **Interface Segregation Principle (ISP):**
+    Saya memisahkan antarmuka menjadi dua bagian spesifik, yaitu **ProductService** dan **CarService**. Hal ini memastikan bahwa kelas implementasi seperti **CarServiceImpl** tidak dipaksa untuk memiliki metode yang tidak mereka butuhkan (seperti metode khusus pengolahan produk biasa), sehingga kontrak antar kelas menjadi lebih ramping dan spesifik.
+
+*   **Dependency Inversion Principle (DIP):**
+    Pada tingkat **Controller**, saya memastikan kelas tersebut hanya bergantung pada **Abstraksi (Interface)**, bukan pada implementasi konkret. Saya menggunakan `@Autowired` untuk memanggil **CarService** dan **ProductService** (Interface), sehingga jika di masa depan saya ingin mengganti cara penyimpanan data (misalnya dari memori ke database), saya tidak perlu mengubah satu baris pun kodingan di dalam **Controller**.
+
+---
+
+## 2) Keuntungan Menerapkan Prinsip SOLID
+
+Menerapkan prinsip SOLID memberikan banyak keuntungan pada kualitas kodingan proyek saya:
+
+1.  **Kemudahan Pengujian (Testability):** Karena setiap kelas memiliki tanggung jawab tunggal (**SRP**), saya berhasil mencapai **100% Code Coverage** dengan lebih mudah. Contoh: Saya bisa membuat unit test khusus untuk **CarRepository** tanpa harus khawatir tes tersebut terpengaruh oleh logika di kelas produk.
+2.  **Kodingan Lebih Rapi dan Terorganisir:** Dengan memisahkan interface (**ISP**), kodingan menjadi lebih bersih. Contoh: **CarServiceImpl** hanya fokus mengimplementasikan logika mobil, sehingga kodenya lebih pendek dan mudah dibaca oleh developer lain.
+3.  **Fleksibilitas Tinggi:** Berkat penerapan **DIP**, aplikasi saya menjadi sangat fleksibel. Contoh: Jika asdos meminta saya mengganti **CarRepository** dari `List` menjadi database SQL, saya cukup membuat implementasi baru tanpa merusak struktur di layer **Service** atau **Controller**.
+
+---
+
+## 3) Kerugian Jika Tidak Menerapkan Prinsip SOLID
+
+Jika saya mengabaikan prinsip SOLID, proyek ini akan menghadapi berbagai masalah teknis:
+
+1.  **God Object (Spaghetti Code):** Tanpa **SRP**, file **ProductController** akan terus membengkak setiap kali fitur baru ditambah. Hal ini membuat kodingan menjadi sangat sulit dipahami dan meningkatkan risiko munculnya bug secara tidak sengaja saat melakukan perubahan kecil.
+2.  **Kerapuhan Kode (Fragility):** Tanpa mematuhi **LSP**, jika saya tetap melakukan `extends ProductController`, maka setiap kali ada perubahan pada kodingan produk, fitur mobil berisiko ikut rusak (**crash**). Hal ini membuat aplikasi menjadi rapuh dan tidak stabil.
+3.  **Ketergantungan yang Kaku (Tight Coupling):** Tanpa **DIP**, komponen aplikasi akan saling mengunci. Contoh: Jika Controller bergantung langsung pada kelas asli (bukan interface), maka setiap perubahan kecil pada struktur data di level bawah akan memaksa kita membongkar seluruh aplikasi dari atas sampai bawah.
