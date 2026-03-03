@@ -34,4 +34,11 @@ public class CarTest {
     void testGetCarQuantity() {
         assertEquals(10, this.car.getCarQuantity());
     }
+
+    @Test
+    void testCarIdIsGenerated() {
+        Car car = new Car();
+        assertNotNull(car.getCarId());
+    }
 }
+
