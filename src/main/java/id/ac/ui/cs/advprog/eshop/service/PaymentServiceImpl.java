@@ -5,6 +5,7 @@ import id.ac.ui.cs.advprog.eshop.model.Payment;
 import id.ac.ui.cs.advprog.eshop.repository.PaymentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -16,19 +17,33 @@ public class PaymentServiceImpl implements PaymentService {
 
     @Override
     public Payment addPayment(Order order, String method, Map<String, String> paymentData) {
-        String status = "REJECTED";
-        if (method.equals("VOUCHER")) {
+        String status = validatePayment(method, paymentData);
+        Payment payment = createPaymentObject(method, status, paymentData);
+        return paymentRepository.save(payment);
+    }
+
+
+    private String validatePayment(String method, Map<String, String> paymentData) {
+        if ("VOUCHER".equals(method)) {
             String code = paymentData.get("voucherCode");
             if (code != null && code.startsWith("ESHOP") && code.length() == 16 && code.replaceAll("[^0-9]", "").length() == 8) {
-                status = "SUCCESS";
+                return "SUCCESS";
             }
-        } else if (method.equals("BANK_TRANSFER")) {
+        } else if ("BANK_TRANSFER".equals(method)) {
             if (paymentData.get("bankName") != null && paymentData.get("referenceCode") != null) {
-                status = "SUCCESS";
+                return "SUCCESS";
             }
         }
-        Payment payment = new Payment(UUID.randomUUID().toString(), method, status, paymentData);
-        return paymentRepository.save(payment);
+        return "REJECTED";
+    }
+
+    private Payment createPaymentObject(String method, String status, Map<String, String> paymentData) {
+        return Payment.builder()
+                .id(UUID.randomUUID().toString())
+                .method(method)
+                .status(status)
+                .paymentData(paymentData)
+                .build();
     }
 
     @Override

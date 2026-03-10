@@ -33,10 +33,9 @@ class PaymentServiceImplTest {
         products.add(new Product());
         Order order = new Order("1", products, 1708560000L, "Bambang");
 
-        // --- TAMBAHIN BARIS INI ---
-        // Bilang ke mockRepository: Kalau disuruh save, balikin lagi payment yang dikirim
+
         when(paymentRepository.save(any(Payment.class))).thenAnswer(i -> i.getArguments()[0]);
-        // --------------------------
+
 
         Payment payment = paymentService.addPayment(order, "VOUCHER", data);
         assertEquals("SUCCESS", payment.getStatus());
@@ -52,9 +51,9 @@ class PaymentServiceImplTest {
         products.add(new Product());
         Order order = new Order("1", products, 1708560000L, "Bambang");
 
-        // --- TAMBAHIN BARIS INI ---
+
         when(paymentRepository.save(any(Payment.class))).thenAnswer(i -> i.getArguments()[0]);
-        // --------------------------
+
 
         Payment payment = paymentService.addPayment(order, "BANK_TRANSFER", data);
         assertEquals("SUCCESS", payment.getStatus());
