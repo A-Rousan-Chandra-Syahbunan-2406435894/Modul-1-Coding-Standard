@@ -33,6 +33,7 @@ public class PaymentServiceImpl implements PaymentService {
             if (paymentData.get("bankName") != null && paymentData.get("referenceCode") != null) {
                 return "SUCCESS";
             }
+
         }
         return "REJECTED";
     }
