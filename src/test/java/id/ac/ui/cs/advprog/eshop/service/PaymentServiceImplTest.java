@@ -58,4 +58,11 @@ class PaymentServiceImplTest {
         Payment payment = paymentService.addPayment(order, "BANK_TRANSFER", data);
         assertEquals("SUCCESS", payment.getStatus());
     }
+    @Test
+    void testAddPaymentBankTransferRejectedIfEmpty() {
+        Map<String, String> data = new HashMap<>();
+        // Sengaja data kosong/null biar dapet status REJECTED
+        Payment payment = paymentService.addPayment(new Order(), "BANK_TRANSFER", data);
+        assertEquals("REJECTED", payment.getStatus());
+    }
 }
