@@ -137,3 +137,34 @@ Jika saya mengabaikan prinsip SOLID, proyek ini akan menghadapi berbagai masalah
 1.  **God Object (Spaghetti Code):** Tanpa **SRP**, file **ProductController** akan terus membengkak setiap kali fitur baru ditambah. Hal ini membuat kodingan menjadi sangat sulit dipahami dan meningkatkan risiko munculnya bug secara tidak sengaja saat melakukan perubahan kecil.
 2.  **Kerapuhan Kode (Fragility):** Tanpa mematuhi **LSP**, jika saya tetap melakukan `extends ProductController`, maka setiap kali ada perubahan pada kodingan produk, fitur mobil berisiko ikut rusak (**crash**). Hal ini membuat aplikasi menjadi rapuh dan tidak stabil.
 3.  **Ketergantungan yang Kaku (Tight Coupling):** Tanpa **DIP**, komponen aplikasi akan saling mengunci. Contoh: Jika Controller bergantung langsung pada kelas asli (bukan interface), maka setiap perubahan kecil pada struktur data di level bawah akan memaksa kita membongkar seluruh aplikasi dari atas sampai bawah.
+
+## Reflection
+
+### 1. Efektivitas Alur TDD
+
+Menurut saya, pendekatan Test-Driven Development (TDD) cukup membantu dalam proses pengembangan. Dengan menulis test terlebih dahulu, saya dipaksa untuk memikirkan spesifikasi fitur serta kemungkinan error sebelum mulai menulis implementasi kode.
+
+Salah satu keuntungan yang paling terasa adalah ketika melakukan refactoring atau menambahkan fitur baru. Saya bisa merasa lebih yakin karena jika ada perubahan yang menyebabkan bug, unit test akan langsung gagal pada fase **RED**, sehingga masalah tersebut bisa segera diketahui.
+
+Namun, pada awalnya fase **RED** terasa cukup memakan waktu karena saya harus menuliskan struktur test terlebih dahulu sebelum implementasi dibuat. Ke depannya, saya perlu melatih diri untuk menulis test dengan lebih cepat dan efisien agar proses TDD dapat berjalan lebih lancar tanpa mengurangi kualitas pengujian.
+
+---
+
+### 2. Implementasi Prinsip F.I.R.S.T pada Unit Test
+
+Dalam pembuatan unit test, saya berusaha mengikuti prinsip **F.I.R.S.T** sebagai panduan agar test yang dibuat tetap berkualitas.
+
+**Fast**  
+Test dijalankan dengan cepat karena menggunakan Mockito dan MockMvc tanpa bergantung pada database eksternal atau jaringan. Dengan demikian, test dapat dijalankan berulang kali tanpa memperlambat proses development.
+
+**Independent**  
+Setiap test berjalan secara terpisah dan tidak bergantung pada test lainnya. Saya menggunakan anotasi `@BeforeEach` untuk memastikan setiap test memiliki objek `Order` yang baru, sehingga kondisi awal selalu konsisten.
+
+**Repeatable**  
+Test bersifat deterministik, sehingga hasilnya akan tetap sama setiap kali dijalankan. Hasil pengujian tidak dipengaruhi oleh urutan eksekusi test maupun lingkungan tempat test dijalankan.
+
+**Self-validating**  
+Test memberikan hasil yang jelas secara otomatis melalui assertion seperti `assertEquals`, `assertThrows`, serta `verify` dari Mockito. Dengan demikian, tidak diperlukan pemeriksaan manual untuk menentukan apakah test berhasil atau gagal.
+
+**Timely**  
+Unit test ditulis sebelum implementasi fitur dibuat. Pendekatan ini mengikuti prinsip TDD, sehingga setiap kode yang ditambahkan memiliki tujuan yang jelas dan telah diverifikasi melalui test.
