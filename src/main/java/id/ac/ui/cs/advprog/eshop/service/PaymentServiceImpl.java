@@ -17,9 +17,28 @@ public class PaymentServiceImpl implements PaymentService {
 
     @Override
     public Payment addPayment(Order order, String method, Map<String, String> paymentData) {
-        String status = validatePayment(method, paymentData);
-        Payment payment = createPaymentObject(method, status, paymentData);
+        String status = switch (method) {
+            case "VOUCHER" -> validateVoucher(paymentData.get("voucherCode"));
+            case "BANK_TRANSFER" -> validateBankTransfer(paymentData);
+            default -> "REJECTED";
+        };
+        Payment payment = Payment.builder()
+                .id(UUID.randomUUID().toString())
+                .method(method)
+                .status(status)
+                .paymentData(paymentData)
+                .build();
         return paymentRepository.save(payment);
+    }
+
+    private String validateVoucher(String code) {
+        return (code != null && code.startsWith("ESHOP") && code.length() == 16 && code.replaceAll("[^0-9]", "").length() == 8)
+                ? "SUCCESS" : "REJECTED";
+    }
+
+    private String validateBankTransfer(Map<String, String> data) {
+        return (data.get("bankName") != null && data.get("referenceCode") != null)
+                ? "SUCCESS" : "REJECTED";
     }
 
 
