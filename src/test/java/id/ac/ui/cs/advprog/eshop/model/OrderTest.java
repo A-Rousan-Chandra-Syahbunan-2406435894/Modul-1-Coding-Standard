@@ -22,7 +22,7 @@ class OrderTest {
 
         Product product2 = new Product();
         product2.setProductId("2c6b2328-a637-4664-83c7-f32db8620155");
-        product2.setProductName("Sabun Cap Ucup");
+        product2.setProductName("Sabun Cap Usep");
         product2.setProductQuantity(1);
 
         this.products.add(product1);
